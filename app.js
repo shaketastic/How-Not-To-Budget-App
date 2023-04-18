@@ -9,7 +9,7 @@ const app = express();
 app.use(express.json()) // parse incoming JSON
 app.use(cors());
 
-// routes
+// routes 
 
 app.get("/", (req, res) => {
     res.send("Welcome to the How Not to Budget App! Happy Spending");
