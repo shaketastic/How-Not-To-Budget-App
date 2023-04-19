@@ -25,6 +25,7 @@ transactions.post("/", (req, res) => {
 });
 
 // destroy and delete transaction
+// alternate: const id = req.params.id if(billsArray[id]) billsArray.splice(id, 1) res.json(billsArray)
 transactions.delete("/:id", (req, res) => {
     const { id } = req.params;
 
@@ -36,15 +37,32 @@ transactions.delete("/:id", (req, res) => {
     }
 });
 
-// update a transaction
+// update a transaction and catch error
 transactions.put("/:id", (req, res) => {
     const { id } = req.params;
 
-    if(billsArray[id]) {
-        billsArray[id] = req.body;
-        res.status(404).json({error: "The transaction with ID was NOT FOUND"});
+    if(!billsArray[id]) {
+        res.status(404).json({error: "The transaction with ID was NOT FOUND"})
+        return;
     }
+
+    let { name, date, amount, from, category } = req.body;
+    if(name && date && amount !== undefined && from) {
+        billsArray[id] = { 
+            name, date, amount, from, category 
+        }; 
+            res.json(billsArray[id]);    
+        } else {
+            res.status(404).json({ 
+                error: "Please provide all necessary fields"
+            })
+        }   
 });
-
-
+    // if(billsArray[id]) {
+    //   billsArray[id] = req.body;
+    //   res.status(200).json(billsArray[id]);
+    // } else {
+    //   res.status(404).json({error: "The transaction with ID was NOT FOUND"});  
+    // }
+    
 module.exports = transactions;
