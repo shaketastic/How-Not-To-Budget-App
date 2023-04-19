@@ -1,44 +1,27 @@
-module.exports = [
-    {
-      name: "mortgage",
-      date: "04/15/2023",
-      amount: 2100,
-      from: loanDepot,
-      category: "shelter",
-    },
-    {
-        name: "phone bill",
-        date: "04/10/2023",
-        amount: 115,
-        from: "T-mobile",
-        category: "mobile",
-      },
-      {
-        name: "car insurance",
-        date: "04/15/2023",
-        amount: 125,
-        from: Geico,
-        category: "transportation",
-      },
-      {
-        name: "groceries",
-        date: "04/18/2023",
-        amount: 180,
-        from: Shoprite,
-        category: "food",
-      },
-      {
-        name: "water, gas, electric",
-        date: "04/20/2023",
-        amount: 230,
-        from: "Central Hudson",
-        category: "utilities",
-      },
-      {
-        name: "portfolio",
-        date: "04/05/2023",
-        amount: 200,
-        from: Robinhood,
-        category: "savings",
-      }
-];
+const express = require("express");
+const transactions = express.Router();
+const billsArray = require("../models/transactions.js");
+
+// index/read transactions
+transactions.get("/", (req, res) => {
+    res.json(billsArray);
+});
+
+// show/read one transaction
+transactions.get("/:id", (req, res) => {
+    const { id } = req.params;
+    if(billsArray[id]) {
+    res.json(billsArray[id])    
+    } else {
+    res.status(404).json({error: "The transaction with ID was NOT FOUND"});
+    }
+});
+
+// create transaction and validate
+transactions.post("/", (req, res) => {
+    billsArray.push(req.body);
+    res.json(billsArray[billsArray.length - 1]);
+});
+
+// destroy and delete transaction
+transactions.delete

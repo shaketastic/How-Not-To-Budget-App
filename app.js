@@ -2,6 +2,8 @@
 const express = require("express");
 const cors = require("cors");
 
+const transController = require("./controllers/transController.js");
+
 // config
 const app = express();
 
